@@ -95,26 +95,14 @@ For example:
 ./start.sh cli info
 ```
 
-### Using with Cursor
+### Using with Command Line
 
-To use this MCP server with Cursor, you need to configure Cursor to use this server as a tool provider:
+To use this MCP server with Command, you need to configure access the server:
 
 1. Build the project:
    ```bash
    npm run build
    ```
-
-2. In Cursor, go to Settings > AI > Model Context Protocol
-3. Add a new MCP tool provider with the following settings:
-   - Name: PBS API
-   - Command: `/full/path/to/pbs-mcp-standalone/build/index.js`
-   - Working Directory: `/full/path/to/pbs-mcp-standalone`
-
-Replace `/full/path/to/pbs-mcp-standalone` with the actual path to your PBS MCP installation.
-
-**Important**: Make sure to use the full path to the `build/index.js` file, not the `start.sh` script. The `index.js` file is the main entry point for the MCP server in stdio mode, which is what Cursor requires.
-
-For more detailed instructions, see the [Using with Cursor](/docs/guides/using-with-cursor) guide.
 
 ### API Tool Parameters
 
@@ -324,10 +312,8 @@ For a complete list of endpoints, see the [PBS API documentation](https://data-a
 
 The tool uses the following subscription key for unregistered public users:
 ```
-2384af7c667342ceb5a736fe29f1dc6b
+See the .env.example
 ```
-
-For more advanced usage, you may need to register for API access at [https://dev.pbs.gov.au/contacts.html](https://dev.pbs.gov.au/contacts.html).
 
 ## Limitations
 
@@ -336,19 +322,12 @@ For more advanced usage, you may need to register for API access at [https://dev
 - The API may require authentication for certain operations
 - The API structure and endpoints may change over time
 
-## Resources
+## Additional Resources
 
-- [PBS Developer Website](https://dev.pbs.gov.au/docs/)
+- [PBS Website](https://www.pbs.gov.au/)
+- [PBS Data Website](https://data.pbs.gov.au/)
 - [PBS API Documentation](https://data-api-portal.health.gov.au/api-details#api=pbs-prod-api-public-v3-v3)
-- [PBS A-Z Medicine Listing](https://dev.pbs.gov.au/docs/a-z-medicine-listing)
-- [PBS Developer FAQ](https://dev.pbs.gov.au/docs/faq)
 
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Community Servers
-
-- **[Pandoc](https://github.com/vivekVells/mcp-pandoc)** - MCP server for seamless document format conversion using Pandoc, supporting Markdown, HTML, PDF, DOCX (.docx), csv and more.
-- **[PBS API](https://github.com/matthewdcage/pbs-mcp-server)** - MCP server for accessing the Australian Pharmaceutical Benefits Scheme (PBS) API, providing information about medicines, pricing, and availability in Australia.
-- **[PIF](https://github.com/hungryrobot1/MCP-PIF)** - A Personal Intelligence Framework (PIF), providing tools for file operations, structured reasoning, and journal-based documentation to support continuity and evolving human-AI collaboration across sessions.
