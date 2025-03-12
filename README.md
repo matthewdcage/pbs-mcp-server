@@ -1,4 +1,4 @@
-# PBS MCP Standalone Server
+# Pharmaceutical Benefits Scheme (PBS) MCP AI Enabled API Server ![MCP Server](https://badge.mcpx.dev?type=dev 'MCP Dev')
 
 A standalone Model Context Protocol (MCP) server for accessing the Australian Pharmaceutical Benefits Scheme (PBS) API.
 
@@ -21,6 +21,26 @@ The MCP is available via HTTP and CLI.
 
 *Please be aware of the rate limits for the PBS and adjust your request frequency. I recommend a periodic call to store the information you require from the API and update it on a weekly basis.*
 
+## MCP Server Features ![MCP Server](https://badge.mcpx.dev?type=server&features=tools)
+
+This MCP server implements the following Model Context Protocol features:
+
+- **Tools**: Provides tools for querying the PBS API endpoints, allowing AI models to access pharmaceutical data
+- **Transport Layers**: Supports both stdio and HTTP/SSE transport layers
+- **Error Handling**: Comprehensive error handling for API rate limits and authentication issues
+- **LLM Integration**: Receives tool calls and prompts directly from LLM components, enabling seamless AI interaction with PBS data
+
+### How It Works
+
+The MCP Client ![MCP Client](https://badge.mcpx.dev?type=client&features=prompts,tools 'MCP Client'):
+
+1. **Receives Tool Calls**: When an LLM (like Claude) needs pharmaceutical data, it sends a tool call to this server
+2. **Processes Prompts**: Interprets natural language prompts about medication information
+3. **Executes API Queries**: Translates the requests into appropriate PBS API calls
+4. **Returns Structured Data**: Sends back formatted pharmaceutical data that the LLM can use in its responses
+
+This enables AI assistants to access up-to-date PBS information without needing to have this data in their training.
+
 ## Installation
 
 1. Clone this repository:
@@ -41,7 +61,7 @@ The MCP is available via HTTP and CLI.
 
 ## Usage
 
-### Starting the Server
+### Starting the Server ![MCP Server](https://badge.mcpx.dev?type=server&features=tools)
 
 The PBS MCP server can be run in different modes:
 
@@ -114,6 +134,59 @@ To use this MCP server as a command-line tool:
    ./start.sh cli <command>
    ```
 
+### Integrating with MCP Clients ![MCP Client](https://badge.mcpx.dev?type=client)
+
+This server can be integrated with any MCP-compatible client, such as:
+
+- Local AI Editors and AI/LLM Servers
+- Other AI assistants that support the Model Context Protocol
+- Custom applications using the MCP client libraries
+
+#### Client Configuration Example
+
+Here's an example of how to configure this server with an MCP client:
+
+```json
+{
+  "mcpServers": {
+    "pbs-api": {
+      "command": "node",
+      "args": ["path/to/pbs-mcp-standalone/build/index.js"],
+      "env": {
+        "PBS_API_SUBSCRIPTION_KEY": "your-subscription-key-here"
+      }
+    }
+  }
+}
+```
+
+#### Accessing the Server from a Client
+
+To access this MCP server from a client:
+
+1. **For Claude Desktop or other MCP-compatible AI assistants**:
+   - Configure the assistant to use this server as an MCP tool provider
+   - The assistant will automatically discover and use the tools provided by this server
+   - The LLM can send natural language prompts about medications that will be processed by the server
+
+2. **For custom applications**:
+   - Use the HTTP API endpoints described below
+   - Connect to the SSE endpoint for real-time tool events
+   - Or spawn the server process and communicate via stdin/stdout
+
+#### Example LLM Prompts
+
+The server can interpret various prompts from LLMs, such as:
+
+```
+"Find information about metformin in the PBS"
+"What is the PBS code for insulin?"
+"List all prescribers who can prescribe antibiotics"
+"Get the latest pricing for asthma medications"
+```
+
+These natural language prompts are translated into appropriate PBS API calls.
+
 ### API Tool Parameters
 
 The PBS API tool can be used with the following parameters:
@@ -137,7 +210,7 @@ The PBS API tool can be used with the following parameters:
 - `subscriptionKey` (string, optional): Custom subscription key. If not provided, the default public key will be used
 - `timeout` (number, optional): Request timeout in milliseconds. Default: 30000
 
-## HTTP API
+## HTTP API ![MCP Server](https://badge.mcpx.dev?type=server&features=tools)
 
 When running in HTTP mode, the following endpoints are available:
 
@@ -181,7 +254,7 @@ POST /api/:toolName
 
 Invokes a tool and returns the result as JSON.
 
-## Command-Line Interface
+## Command-Line Interface ![MCP Dev](https://badge.mcpx.dev?type=dev)
 
 The PBS MCP server can be used as a command-line tool with the following commands:
 
@@ -324,11 +397,41 @@ The tool uses a subscription key for accessing the PBS API. You can obtain your 
 
 For development purposes, see the `.env.example` file for configuration details.
 
+### Obtaining a PBS API Subscription Key
+
+To obtain your own PBS API subscription key, follow these steps:
+
+1. **Visit the PBS Data API Portal**: 
+   - Go to [https://data-api-portal.health.gov.au/](https://data-api-portal.health.gov.au/)
+
+2. **Create an Account**:
+   - Click on "Sign Up" to create a new account
+   - Fill in your details and verify your email address
+
+3. **Subscribe to the PBS API**:
+   - Once logged in, navigate to the "Products" section
+   - Select the "PBS Public API v3" product
+   - Click "Subscribe" to request access to the API
+
+4. **Retrieve Your Subscription Key**:
+   - After your subscription is approved, go to your profile
+   - Navigate to "Subscriptions" or "API Keys" section
+   - Copy your primary or secondary key
+
+5. **Configure Your Environment**:
+   - Create a `.env` file based on the `.env.example` template
+   - Replace `your-subscription-key-here` with your actual subscription key:
+     ```
+     PBS_API_SUBSCRIPTION_KEY=your-actual-subscription-key
+     ```
+
+**Note**: The PBS Public API is rate-limited to one request per 20 seconds. This limit is shared among all users of the public API. For higher rate limits or access to embargo data (future schedules), you may need to apply for special access through the PBS Developer Program.
+
 ## Limitations
 
-- The PBS API has a rate limit of 5 requests per time window
+- The PBS Public API is rate-limited to one request per 20 seconds (shared among all users)
+- Only the current schedule and those published in the past 12 months are available via the Public API
 - Some endpoints require specific parameters to be provided
-- The API may require authentication for certain operations
 - The API structure and endpoints may change over time
 
 ## Additional Resources
@@ -336,7 +439,12 @@ For development purposes, see the `.env.example` file for configuration details.
 - [PBS Website](https://www.pbs.gov.au/)
 - [PBS Data Website](https://data.pbs.gov.au/)
 - [PBS API Documentation](https://data-api-portal.health.gov.au/api-details#api=pbs-prod-api-public-v3-v3)
+- [Model Context Protocol Documentation](https://github.com/modelcontextprotocol/mcp)
 
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+---
+
+![MCP Server](https://badge.mcpx.dev?type=server&features=tools) ![MCP Client](https://badge.mcpx.dev?type=client) ![MCP Dev](https://badge.mcpx.dev?type=dev) ![MCP Enabled](https://badge.mcpx.dev?status=on) ❤️ 
