@@ -4,22 +4,22 @@ A standalone Model Context Protocol (MCP) server for accessing the Australian Ph
 
 ## About the Author
 
-This PBS MCP server was developed by [Matthew Cage] Founder of https://ai-advantage.au specialist in Automation, AI Engineering and AI integration and healthcare data systems.
+This PBS MCP server was developed by [Matthew Cage], Founder of https://ai-advantage.au, specialist in Automation, AI Engineering and AI integration and healthcare data systems.
 
 Collaborate with me:
 https://www.linkedin.com/in/digitalmarketingstrategyexpert/
 
 ## Overview
 
-This project provides a standalone MCP server that allows AI models to access the Australian Pharmecutical benefits Scheme Database (PBS) API, which contains information about medicines, pricing, and availability in Australia.
+This project provides a standalone MCP server that allows AI models to access the Australian Pharmaceutical Benefits Scheme (PBS) API, which contains information about medicines, pricing, and availability in Australia.
 
-The project is build for the Public API, but can easily be adapted to the private API if you have been granted developer access.
+The project is built for the Public API, but can easily be adapted to the private API if you have been granted developer access.
 
 The PBS API provides programmatic access to PBS data, including medicine listings, pricing, and availability. This MCP server makes it easy to integrate PBS data into AI workflows.
 
 The MCP is available via HTTP and CLI.
 
-*Please be aware of the rate limits for the PBS and adjust your request frequency.  I recommend a periodic call and store the information you require from the API and update it on a weekly database.*
+*Please be aware of the rate limits for the PBS and adjust your request frequency. I recommend a periodic call to store the information you require from the API and update it on a weekly basis.*
 
 ## Installation
 
@@ -320,10 +320,9 @@ For a complete list of endpoints, see the [PBS API documentation](https://data-a
 
 ## Authentication
 
-The tool uses the following subscription key for unregistered public users:
-```
-See the .env.example
-```
+The tool uses a subscription key for accessing the PBS API. You can obtain your own key by registering on the PBS Developer Portal.
+
+For development purposes, see the `.env.example` file for configuration details.
 
 ## Limitations
 
