@@ -1,7 +1,7 @@
 {
   "name": "pbs-mcp-standalone",
   "version": "1.0.0",
-  "description": "Standalone PBS API MCP server for Cursor",
+  "description": "Standalone PBS API MCP server",
   "type": "module",
   "main": "build/index.js",
   "bin": {

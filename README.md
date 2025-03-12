@@ -95,13 +95,23 @@ For example:
 ./start.sh cli info
 ```
 
-### Using with Command Line
+### Using as a Command-Line Tool
 
-To use this MCP server with Command, you need to configure access the server:
+To use this MCP server as a command-line tool:
 
 1. Build the project:
    ```bash
    npm run build
+   ```
+
+2. Run the CLI with the desired command:
+   ```bash
+   npm run cli -- <command>
+   ```
+   
+   Or use the start script:
+   ```bash
+   ./start.sh cli <command>
    ```
 
 ### API Tool Parameters
